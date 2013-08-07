@@ -1,0 +1,6 @@
+#Deprecated. Prefer to use the one in corobot_srvs package, which is exactly the same
+
+uint32 id
+int32  value
+---
+bool result

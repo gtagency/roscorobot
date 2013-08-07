@@ -1,0 +1,6 @@
+#Deprecated. Prefer to use the one in corobot_srvs package, which is exactly the same
+
+int32 px
+int32 py
+---
+int8 err

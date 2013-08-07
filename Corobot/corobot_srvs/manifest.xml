@@ -1,0 +1,15 @@
+<package>
+  <description brief="corobot_srvs">
+
+     Package reuniting the Corobot's specific services.
+
+  </description>
+  <author>Morgan Cormier/mcormier@coroware.com</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/corobot_srvs</url>
+  <depend package="roscpp"/>
+
+</package>
+
+

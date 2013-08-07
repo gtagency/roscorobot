@@ -1,0 +1,10 @@
+#
+# Morgan Cormier <mcormier@coroware.com>
+#
+# Service used to get the serial number of the Phidget servo controller. Useful to differenciate between two connected servo controllers
+#
+# serialNumber is the serial number of the phidget servo controller
+
+---
+
+int8 serialNumber

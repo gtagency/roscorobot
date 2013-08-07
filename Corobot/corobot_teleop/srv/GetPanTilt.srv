@@ -1,0 +1,4 @@
+---
+int8 err
+float32 pan
+float32 tilt

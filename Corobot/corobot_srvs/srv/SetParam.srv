@@ -1,0 +1,21 @@
+#
+# Morgan Cormier <mcormier@coroware.com>
+#
+# Service used to set manually set the parameters of the servo controller
+#
+# Index is the index of the servo motor connected to the phidget device. 
+# The maximum value of index depends on the Phidget device and how many connections it accepts
+#
+# min_us The minimum supported PCM in microseconds
+#
+# max_us The maximum supported PCM in microseconds
+#
+# degrees The degrees of rotation defined by the given PCM range. 
+#
+# velocity_max The maximum velocity in degrees/second
+int8 index
+float32 min_us
+float32 max_us
+float32 degrees
+float32 velocity_max
+---

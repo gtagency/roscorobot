@@ -1,0 +1,18 @@
+#Service that permits to move the arm, the gripper and the wrist of a Corobot's arm
+
+uint8 GRIPPER_OPEN = 0
+uint8 GRIPPER_CLOSED = 1
+
+# Give a state order to the gripper. Can take value of GRIPPER_OPEN or GRIPPER_CLOSED
+uint8 gripper
+
+# Position (in radian) that decides the orientation of the shoulder servo. Used only for the service move_arm.
+float32 shoulderOrientation
+
+# Position (in radian) that decides the orientation of the elbow servo. Used only for the service move_arm.
+float32 elbowOrientation
+
+# Position (in radian) that decides the orientation of the wrist. Used only for the service MoveWrist.
+float32 wristOrientation
+---
+int8 err

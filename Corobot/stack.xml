@@ -1,0 +1,9 @@
+<stack>
+  <description brief="Corobot">Corobot</description>
+  <author>Morgan Cormier/mcormier@coroware.com</author>
+  <license>BSD</license>  
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/Corobot</url>
+  <depend stack="ros" />
+  <depend stack="common_rosdeps" />
+</stack>

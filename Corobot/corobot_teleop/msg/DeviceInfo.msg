@@ -1,0 +1,11 @@
+bool Hokuyo_attached
+bool PTZcam_attached
+bool REARcam_attached
+bool SSC32board_attached
+bool frontBumper_attached
+bool backBumper_attached
+bool Encoder_left_attached
+bool Encoder_right_attached
+bool Voltage_attached
+bool IR_attached
+

@@ -1,0 +1,14 @@
+#Deprecated. Prefer to use the one in corobot_srvs package, which is exactly the same
+
+#
+# Morgan Cormier <mcormier@coroware.com>
+#
+# Service used to set the state of a motor
+#
+# Index is the index of the servo motor connected to the phidget device. 
+# The maximum value of index depends on the Phidget device and how many connections it accepts
+#
+# state The state of the motor. 0 is powered off, 1 is powered on.
+int8 index
+int8 state
+---

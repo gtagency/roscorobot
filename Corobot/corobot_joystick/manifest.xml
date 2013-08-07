@@ -1,0 +1,20 @@
+<package>
+  <description brief="corobot_joystick">
+
+     Package that permits to control the Corobot with a joystick. 
+
+  </description>
+  <author>Gang Li/GangLi@coroware.com</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/joystick_control</url>
+  <depend package="roscpp"/>
+  <depend package="std_msgs"/>
+  <depend package="corobot_ssc32"/>
+  <depend package="corobot_msgs"/>
+  <depend package="corobot_srvs"/>
+  <depend package="joy"/>
+
+</package>
+
+

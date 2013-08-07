@@ -1,0 +1,7 @@
+#Deprecated. Prefer to use the one in corobot_srvs package, which is exactly the same
+
+int32 left_speed
+int32 right_speed
+int32 speed
+---
+int8 err

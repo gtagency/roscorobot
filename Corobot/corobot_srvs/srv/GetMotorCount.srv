@@ -1,0 +1,9 @@
+#
+# Morgan Cormier <mcormier@coroware.com>
+#
+# Service used to know the maximum number of motors connectable to the Phidget device.
+#
+# numberMotors is the maximum number of motors that can be connected to the Phidget device
+
+---
+int8 numberMotors

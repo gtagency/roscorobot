@@ -1,0 +1,21 @@
+<package>
+  <description brief="corobot_ssc32">
+
+     A package that interfaces the SSC32 hardware board specific to the Corobot.
+     It uses the SSC32_core package made by Steven bellens: steven.bellens@mech.kuleuven.be 
+
+  </description>
+  <author>CoroWare/mcormier@coroware.com</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/corobot_ssc32</url>
+  <depend package="std_msgs"/>
+  <depend package="rospy"/>
+  <depend package="roscpp"/>
+  <depend package="corobot_srvs"/>
+  <depend package="corobot_msgs"/>
+  <depend package="diagnostic_updater" />
+    <export>
+        <cpp cflags="-I${prefix}/src" lflags="-Wl,-rpath,${prefix}/lib  -L${prefix}/lib -lcorobot_ssc32"/>
+    </export>
+</package>

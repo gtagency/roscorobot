@@ -1,0 +1,20 @@
+<package>
+  <description brief="corobot_pantilt">
+
+     corobot_pantilt is actually the package logitech_pantilt from Dallas Geocker that was just renamed and integrated in corobot stack for an easy installation of the Corobot stack.
+     The script executing mjpg-streamer necessary for the logitech_pantilt package has been integrated in this corobot_pantilt package. Now you won't have to download mjpg-streamer and execute the script yourself, only a make in the corobot_pantilt/src/mjpg-streamer/ folder is necessary.
+
+  </description>
+  <author>Morgan Cormier/mcormier@coroware.com</author>
+  <license>GPL v2</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://www.ros.org/wiki/corobot_pantilt</url>
+  <depend package="roscpp"/>
+  <depend package="joy"/>
+  <depend package="corobot_msgs"/>
+  <depend package="sensor_msgs" />
+  <depend package="diagnostic_updater" />
+
+</package>
+
+
