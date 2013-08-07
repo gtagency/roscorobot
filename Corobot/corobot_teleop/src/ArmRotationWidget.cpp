@@ -120,7 +120,7 @@ void ArmRotationWidget::timerEvent(QTimerEvent *event)
      double angle;
 
      QList<joint *> joints;
-         foreach (QGraphicsItem *item, scene()->items()) {
+         Q_FOREACH (QGraphicsItem *item, scene()->items()) {
              if (joint *j = qgraphicsitem_cast<joint *>(item))
                  joints << j;
          }
@@ -135,14 +135,14 @@ void ArmRotationWidget::timerEvent(QTimerEvent *event)
 	     {
 	     	angle = atan(x/y) + M_PI/2;
 		joints.at(1)->setPos(this->sceneRect().right()/2 + 5 + cos(angle)*SIZE_ARM, this->sceneRect().bottom()-10 - LENGTH_ROBOT * 4/5 +5 - sin(angle)*SIZE_ARM);
-		emit armAngle_rad(angle);
+		Q_EMIT armAngle_rad(angle);
 	     }
 	     else
 		joints.at(1)->setPos(end_effector);
 
 
              QList<QGraphicsLineItem *> lines;
-             foreach (QGraphicsItem *item, scene()->items()) {
+             Q_FOREACH (QGraphicsItem *item, scene()->items()) {
              	if (QGraphicsLineItem *l = qgraphicsitem_cast<QGraphicsLineItem *>(item))
                 	lines << l;
              }

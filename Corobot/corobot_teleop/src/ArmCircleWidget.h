@@ -11,7 +11,7 @@ class ArmCircleWidget : public QGraphicsView
  public:
      ArmCircleWidget(QWidget *parent = 0);
 
- public slots:
+ public Q_SLOTS:
       void setpos(float x, float y); // set the position of the circle in the widget. x,y is the position of the gripper, in meters.
       void Corobot(bool value); // value is true of a Corobot, false if is an Explorer, Explorer doesn't have an arm therefore the Widget is white
 

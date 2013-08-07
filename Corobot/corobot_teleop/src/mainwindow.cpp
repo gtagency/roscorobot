@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //gripper.show();irCallback
     //wrist.show();
 
-    //connect signals to slots.
+    //connect Q_SIGNALS to Q_SLOTS.
     connect(&arm,SIGNAL(theta1(double)),ui->lcdNumber,SLOT(display(double))); //display shoulder angle
     connect(&arm,SIGNAL(theta2(double)),ui->lcdNumber_2,SLOT(display(double))); //display elbow angle
     connect(&wrist,SIGNAL(angle(double)),ui->lcdNumber_3,SLOT(display(double))); //display wrist angle
@@ -275,7 +275,7 @@ void MainWindow::connect_clicked(){ // executed when the connect button is pushe
 }
 
 void MainWindow::resizeEvent(QResizeEvent *){//execute this function when the window size changes
-    emit size_changed();
+    Q_EMIT size_changed();
 }
 
 void MainWindow::change_url(QUrl url)//set url to the web viewer

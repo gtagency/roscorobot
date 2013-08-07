@@ -115,7 +115,7 @@ void GripperWidget::timerEvent(QTimerEvent *event)
 
 
      QList<QGraphicsLineItem  *> lines;
-         foreach (QGraphicsItem  *item, scene()->items()) {
+         Q_FOREACH (QGraphicsItem  *item, scene()->items()) {
              if (QGraphicsLineItem  *l = qgraphicsitem_cast<QGraphicsLineItem  *>(item))
                  lines << l;
          }

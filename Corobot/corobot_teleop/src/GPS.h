@@ -16,7 +16,7 @@ Q_OBJECT
      void setList(QListWidget *l);//gives the pointer to the list widget to display the itineraries
 
 
- public slots:
+ public Q_SLOTS:
      void set_map_type(QString value);//changes the map type
      void set_zoom(int value);//set the map zoom value
      void update_coord(double lat, double lon);//update the last coordinate value
@@ -27,7 +27,7 @@ Q_OBJECT
      void check_size();//the size od the map if the size of the web widget
      void selection_changed();//the itinerary selection has changed, therefore change the path that is displayed
 
- signals:
+ Q_SIGNALS:
      void url_changed(QUrl value);
 
  private :

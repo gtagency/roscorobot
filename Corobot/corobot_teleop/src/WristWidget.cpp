@@ -92,7 +92,7 @@ WristWidget::WristWidget(QWidget *parent)
  }
 
 void WristWidget::degree(bool value)
-//if value is true, emit the signal angle in degree,else in radian
+//if value is true, Q_EMIT the signal angle in degree,else in radian
 {
     angle_type = value;
 }
@@ -102,7 +102,7 @@ void WristWidget::angleReceived(double value)
 //set a new value for the wrist angle
 {
     QList<Line  *> lines;
-    foreach (QGraphicsItem  *item, scene()->items()) {
+    Q_FOREACH (QGraphicsItem  *item, scene()->items()) {
         if (Line  *l = qgraphicsitem_cast<Line  *>(item))
             lines << l;
     }
@@ -114,7 +114,7 @@ void WristWidget::turnClockwise()
 //turn the wrist clockwise
 {
     QList<Line  *> lines;
-    foreach (QGraphicsItem  *item, scene()->items()) {
+    Q_FOREACH (QGraphicsItem  *item, scene()->items()) {
         if (Line  *l = qgraphicsitem_cast<Line  *>(item))
             lines << l;
     }
@@ -125,7 +125,7 @@ void WristWidget::turnCounterClockwise()
 //turn the wrist counter clockwise
 {
     QList<Line  *> lines;
-    foreach (QGraphicsItem  *item, scene()->items()) {
+    Q_FOREACH (QGraphicsItem  *item, scene()->items()) {
         if (Line  *l = qgraphicsitem_cast<Line  *>(item))
             lines << l;
     }
@@ -137,7 +137,7 @@ void WristWidget::timerEvent(QTimerEvent *event)
      Q_UNUSED(event);
 
      QList<Line  *> lines;
-     foreach (QGraphicsItem  *item, scene()->items()) {
+     Q_FOREACH (QGraphicsItem  *item, scene()->items()) {
          if (Line  *l = qgraphicsitem_cast<Line  *>(item))
              lines << l;
      }
@@ -145,14 +145,14 @@ void WristWidget::timerEvent(QTimerEvent *event)
             wristAngle = -lines.at(0)->rotation;
 
         if(angle_type)
-            emit angle(wristAngle);
+            Q_EMIT angle(wristAngle);
         else
-            emit angle(wristAngle/180*M_PI);
+            Q_EMIT angle(wristAngle/180*M_PI);
 
-        emit angle_rad(wristAngle/180*M_PI);
+        Q_EMIT angle_rad(wristAngle/180*M_PI);
 
         QList<QGraphicsLineItem  *> lines2;
-            foreach (QGraphicsItem  *item, scene()->items()) {
+            Q_FOREACH (QGraphicsItem  *item, scene()->items()) {
                 if (QGraphicsLineItem  *l = qgraphicsitem_cast<QGraphicsLineItem  *>(item))
                     lines2 << l;
             }

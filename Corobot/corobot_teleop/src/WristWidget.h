@@ -52,8 +52,8 @@ class WristWidget : public QGraphicsView
  public:
      WristWidget(QWidget *parent = 0);
 
-public slots:
-     void degree(bool value);//if value is true, emit the signal angle in degree,else in radian
+public Q_SLOTS:
+     void degree(bool value);//if value is true, Q_EMIT the signal angle in degree,else in radian
      void angleReceived(double value);//set a new value for the wrist angle
      void turnCounterClockwise();//turn the wrist counter clockwise
      void turnClockwise();//turn the wrist clockwise
@@ -68,7 +68,7 @@ public slots:
      double wristAngle;
      bool angle_type;
 
- signals:
+ Q_SIGNALS:
      void angle(double value);//wrist angle in degree or radian depending on the angle_type value
      void angle_rad(float value);//wrist angle in radian
 

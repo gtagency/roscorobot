@@ -51,7 +51,7 @@ class GripperWidget : public QGraphicsView
  public:
      GripperWidget(QWidget *parent = 0);
 
- public slots:
+ public Q_SLOTS:
       void setState(int value);//set the state of the gripper, 1 = open, 2 = closed, 3 = moving
 
  protected:

@@ -1,0 +1,5 @@
+
+# Generated
+cfg/cpp/
+src/corobot_hokuyo/__init__.py
+src/corobot_hokuyo/cfg/HokuyoConfig.py

@@ -11,7 +11,7 @@ class MyQGraphicsView: public QGraphicsView
 	int _numScheduledScalings;
 	void wheelEvent ( QWheelEvent * event );
 	
-	public slots:
+	public Q_SLOTS:
 	void scalingTime(qreal x);
 	void animFinished();
 

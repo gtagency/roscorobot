@@ -3,3 +3,11 @@ CMakeFiles
 Makefile
 cmake_install.cmake
 install_manifest.txt
+
+# ROS build files
+build
+bin
+docs
+lib
+msg_gen
+srv_gen

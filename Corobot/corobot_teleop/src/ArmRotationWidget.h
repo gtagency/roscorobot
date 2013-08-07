@@ -57,7 +57,7 @@ class ArmRotationWidget : public QGraphicsView
      void moveArmLeft();//moves the arm toward the robot
      void moveArmRight();//moves the arm far from the robot
 
- signals:
+ Q_SIGNALS:
      void armAngle_rad(double value);//shoulder angle in radian
 
  protected:

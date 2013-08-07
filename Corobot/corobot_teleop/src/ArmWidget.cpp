@@ -221,7 +221,7 @@ bool doArmIK(const double x, const double y, double& theta1, double& theta2)
 void ArmWidget::Corobot(bool value)
 // value is true of a Corobot, false if is an Explorer, Explorer doesn't have an arm therefore the Widget is white
 {
-        foreach (QGraphicsItem *item, scene()->items()) {
+        Q_FOREACH (QGraphicsItem *item, scene()->items()) {
             if(value == true){
                 item->show();
             }
@@ -288,14 +288,14 @@ void ArmWidget::itemMoved()
 }
 
 void ArmWidget::shoulder_degree(bool value)
-//if value is true, the signal theta1 will be emited in degrees
+//if value is true, the signal theta1 will be Q_EMITed in degrees
 {
     shoulder = value;
 
 }
 
 void ArmWidget::elbow_degree(bool value)
-//if value is true, the signal theta2 will be emited in degrees
+//if value is true, the signal theta2 will be Q_EMITed in degrees
 {
     elbow = value;
 
@@ -330,7 +330,7 @@ void ArmWidget::received_pos(double x, double y)
 {
 
     QList<joint *> joints;
-        foreach (QGraphicsItem *item, scene()->items()) {
+        Q_FOREACH (QGraphicsItem *item, scene()->items()) {
             if (joint *j = qgraphicsitem_cast<joint *>(item))
                 joints << j;
         }
@@ -348,16 +348,16 @@ void ArmWidget::timerEvent(QTimerEvent *event)
      Q_UNUSED(event);
 
      QList<joint *> joints;
-         foreach (QGraphicsItem *item, scene()->items()) {
+         Q_FOREACH (QGraphicsItem *item, scene()->items()) {
              if (joint *j = qgraphicsitem_cast<joint *>(item))
                  joints << j;
          }
 
-       //  foreach (joint *j, joints)
+       //  Q_FOREACH (joint *j, joints)
          //   j->calculateForces();
 /*
          bool itemsMoved = false;
-         foreach (joint *j, joints) {
+         Q_FOREACH (joint *j, joints) {
              if (j->advance())
                  itemsMoved = true;
          }
@@ -380,7 +380,7 @@ void ArmWidget::timerEvent(QTimerEvent *event)
              double t1,t2;
              if(doArmIK(x,y, t1, t2)){
 
-            //emit posarm(x,y);
+            //Q_EMIT posarm(x,y);
 
             double x = LINK_1_LENGTH * cos(t1);
             double y = LINK_1_LENGTH * sin(t1);
@@ -392,26 +392,26 @@ void ArmWidget::timerEvent(QTimerEvent *event)
 
 
             if(shoulder)
-                emit theta1(t1/M_PI*180);
+                Q_EMIT theta1(t1/M_PI*180);
             else
-                emit theta1(t1);
+                Q_EMIT theta1(t1);
             if(elbow)
-                emit theta2(t2/M_PI*180+180);
+                Q_EMIT theta2(t2/M_PI*180+180);
             else
-                emit theta2(t2 + M_PI);
+                Q_EMIT theta2(t2 + M_PI);
 
 	    if (arm_type == Al5a)
 	    {
-		emit shoulderAngle_rad(180 - t1);
-	    	emit elbowAngle_rad(180 + t2);
+		Q_EMIT shoulderAngle_rad(180 - t1);
+	    	Q_EMIT elbowAngle_rad(180 + t2);
 	    }
 	    else
 	    {
-	        emit shoulderAngle_rad(t1);
-	        emit elbowAngle_rad(-t2);
+	        Q_EMIT shoulderAngle_rad(t1);
+	        Q_EMIT elbowAngle_rad(-t2);
 	    }
                  QList<QGraphicsLineItem *> lines;
-                     foreach (QGraphicsItem *item, scene()->items()) {
+                     Q_FOREACH (QGraphicsItem *item, scene()->items()) {
                          if (QGraphicsLineItem *l = qgraphicsitem_cast<QGraphicsLineItem *>(item))
                              lines << l;
                      }

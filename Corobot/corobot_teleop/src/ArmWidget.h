@@ -71,14 +71,14 @@ class ArmWidget : public QGraphicsView
 
 
 
- public slots:
-     void shoulder_degree(bool value);//if value is true, the signal theta1 will be emited in degrees
-     void elbow_degree(bool value);//if value is true, the signal theta2 will be emited in degrees
+ public Q_SLOTS:
+     void shoulder_degree(bool value);//if value is true, the signal theta1 will be Q_EMITed in degrees
+     void elbow_degree(bool value);//if value is true, the signal theta2 will be Q_EMITed in degrees
      void received_pos(double x, double y);//set the position ofthe arm. x,y if he position in meters
      void Corobot(bool value);// value is true of a Corobot, false if is an Explorer, Explorer doesn't have an arm therefore the Widget is white
      //void arm_reset();
      void setModel(bool arm_al5a,bool arm_pincher,bool arm_reactor,bool arm_old_corobot); //set the model of the arm, and so the constants for the length of the parts of the arm
- signals:
+ Q_SIGNALS:
      void theta1(double value); //shoulder angle in either degree or radian
      void theta2(double value); //elbow angle in either degree or radian
      void shoulderAngle_rad(double value);//shoulder angle in radian

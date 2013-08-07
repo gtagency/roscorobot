@@ -94,7 +94,7 @@ void Gps::load_clicked()
 
     FILE *f;
     QByteArray ba;
-    foreach (QString  s, files) {
+    Q_FOREACH (QString  s, files) {
         ba = s.toLatin1();
         f = fopen(ba.data(),"r+");
         char* c = (char*) malloc (10000);

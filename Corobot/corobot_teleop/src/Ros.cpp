@@ -66,7 +66,7 @@ void Ros::subscribe()
     nh.param("corobot_arm_phidget", arm_old_phidget, false);
 
 
-    emit arm_model(arm_al5a, arm_pincher, arm_reactor, arm_old_ssc32 || arm_old_phidget);
+    Q_EMIT arm_model(arm_al5a, arm_pincher, arm_reactor, arm_old_ssc32 || arm_old_phidget);
 
     setOdom_client = n.serviceClient<corobot_srvs::SetOdom>("set_odom");
     //driveControl_client = n.serviceClient<Coroware_teleop::SSC32NodeSetSpeed>("ssc32control/ssc32node_set_speed");
@@ -236,7 +236,7 @@ void Ros::kinectdepthCallback(const sensor_msgs::Image::ConstPtr& msg){
             {
 
                // scenes_kinect_depth->setBackgroundBrush(QBrush(i->copy(0,0,msg->width,msg->height)));
-                emit update_kinectDepthcam(icopy); //we can't allow a thread to use the scene for the zoom and another one to modify the image as it would crash, so we do everything in one thread
+                Q_EMIT update_kinectDepthcam(icopy); //we can't allow a thread to use the scene for the zoom and another one to modify the image as it would crash, so we do everything in one thread
             }
         }
     free(copy);
@@ -275,7 +275,7 @@ void Ros::kinectrgbCallback(const sensor_msgs::CompressedImage::ConstPtr& msg){
             {
 
                 scenes_kinect_rgb->setSceneRect(0,0,640,480);
-                emit update_kinectRGBcam(icopy); //we can't allow a thread to use the scene for the zoom and another one to modify the image as it would crash, so we do everything in one thread
+                Q_EMIT update_kinectRGBcam(icopy); //we can't allow a thread to use the scene for the zoom and another one to modify the image as it would crash, so we do everything in one thread
             }
         }
 
@@ -292,7 +292,7 @@ void Ros::velocityCallback(const nav_msgs::Odometry::ConstPtr& msg){
     linear = sqrt(msg->twist.twist.linear.x *msg->twist.twist.linear.x + msg->twist.twist.linear.y * msg->twist.twist.linear.y);
     angular = msg->twist.twist.angular.z;
 
-    emit velocity_info(linear,angular);
+    Q_EMIT velocity_info(linear,angular);
 
 }
 void Ros::irCallback(const corobot_msgs::IrMsg::ConstPtr& msg){
@@ -305,7 +305,7 @@ void Ros::irCallback(const corobot_msgs::IrMsg::ConstPtr& msg){
     ROS_INFO("ir01 = %f", ir01);
     ROS_INFO("ir02 = %f\n", ir02);
 
-    emit irData(ir01,ir02);
+    Q_EMIT irData(ir01,ir02);
 
 }
 void Ros::powerCallback(const corobot_msgs::PowerMsgConstPtr& msg){
@@ -315,15 +315,15 @@ void Ros::powerCallback(const corobot_msgs::PowerMsgConstPtr& msg){
         percent = 100;
     else
        percent = ((float)(msg->volts - BATTERY_EMPTY)/(float)(12-BATTERY_EMPTY))*100;
-    emit battery_percent(percent);
-    emit battery_volts((double)msg->volts);
+    Q_EMIT battery_percent(percent);
+    Q_EMIT battery_volts((double)msg->volts);
 }
 void Ros::bumperCallback(const corobot_msgs::BumperMsg::ConstPtr& msg){
-     emit bumper_update(msg->value0, msg->value1, msg->value2, msg->value3);
+     Q_EMIT bumper_update(msg->value0, msg->value1, msg->value2, msg->value3);
 }
 
 void Ros::gripperCallback(const corobot_msgs::GripperMsg::ConstPtr& msg){
-    emit this->griperState(msg->state);
+    Q_EMIT this->griperState(msg->state);
 }
 
 
@@ -344,7 +344,7 @@ void Ros::cameraImageCallback(const sensor_msgs::Image::ConstPtr& msg){
 //                *i=i->scaled(320,240);
 //                bottom_left.setImage(*i);
 //            }Mode
-//            emit update_alvoid Pan_control(int value);lcam()gpsCoroware_gui::;
+//            Q_EMIT update_alvoid Pan_control(int value);lcam()gpsCoroware_gui::;
 
 //        }gpsCoroware_gui::
 //    delete i;
@@ -359,7 +359,7 @@ void Ros::rear_camCallback(const sensor_msgs::Image::ConstPtr& msg){
             {
                 //scenes_rear_cam->setSceneRect(0,0,msg->width,msg->height);
                 scenes_rear_cam->setSceneRect(0,0,640,480);
-                emit update_rearcam(icopy); //we can't allow a thread to use the scene for the zoom and another one to modify the image as it would crash, so we do everything in one thread
+                Q_EMIT update_rearcam(icopy); //we can't allow a thread to use the scene for the zoom and another one to modify the image as it would crash, so we do everything in one thread
             }
         }
     delete i;
@@ -378,7 +378,7 @@ void Ros::rear_camCallback_compressed(const sensor_msgs::CompressedImage::ConstP
             {
                 //scenes_rear_cam->setSceneRect(0,0,msg->width,msg->height);
                 scenes_rear_cam->setSceneRect(0,0,640,480);
-                emit update_rearcam(icopy); //we can't allow a thread to use the scene for the zoom and another one to modify the image as it would crash, so we do everything in one thread
+                Q_EMIT update_rearcam(icopy); //we can't allow a thread to use the scene for the zoom and another one to modify the image as it would crash, so we do everything in one thread
             }
         }
     delete i;
@@ -393,7 +393,7 @@ void Ros::ptz_camCallback(const sensor_msgs::Image::ConstPtr& msg){
             {
                 //scenes_ptz_cam->setSceneRect(0,0,msg->width,msg->height);
                 scenes_ptz_cam->setSceneRect(0,0,640,480);
-                emit update_ptzcam(icopy); //we can't allow a thread to use the scene for the zoom and another one to modify the image as it would crash, so we do everything in one thread
+                Q_EMIT update_ptzcam(icopy); //we can't allow a thread to use the scene for the zoom and another one to modify the image as it would crash, so we do everything in one thread
             }
 
         }
@@ -413,7 +413,7 @@ void Ros::ptz_camCallback_compressed(const sensor_msgs::CompressedImage::ConstPt
             {
                 //scenes_ptz_cam->setSceneRect(0,0,msg->width,msg->height);
                 scenes_ptz_cam->setSceneRect(0,0,640,480);
-             	emit update_ptzcam(icopy); //we can't allow a thread to use the scene for the zoom and another one to modify the image as it would crash, so we do everything in one thread
+             	Q_EMIT update_ptzcam(icopy); //we can't allow a thread to use the scene for the zoom and another one to modify the image as it would crash, so we do everything in one thread
             }
         }
     delete i;
@@ -428,7 +428,7 @@ void Ros::mapCallback(const sensor_msgs::CompressedImage::ConstPtr& msg){
             {
           //       scenes_map_image->setSceneRect(0,0,msg->width,msg->height);
                 scenes_rear_cam->setSceneRect(0,0,i->height(),i->width());
-                emit update_mapimage(icopy); //we can't allow a thread to use the scene for the zoom and another one to modify the image as it would crash, so we do everything in one thread
+                Q_EMIT update_mapimage(icopy); //we can't allow a thread to use the scene for the zoom and another one to modify the image as it would crash, so we do everything in one thread
             }
         }
     delete i;
@@ -442,9 +442,9 @@ void Ros::gpsCallback(const sensor_msgs::NavSatFix::ConstPtr& msg){
 
     //if(msg->status.status != 0)
     //{
-        emit gps_lat(lat);
-        emit gps_lon(lon);
-        emit gps_coord(lat,lon);
+        Q_EMIT gps_lat(lat);
+        Q_EMIT gps_lon(lon);
+        Q_EMIT gps_coord(lat,lon);
     //}
 }
 void Ros::scanCallback(const sensor_msgs::LaserScan::ConstPtr& msg){
@@ -489,7 +489,7 @@ void Ros::scanCallback(const sensor_msgs::LaserScan::ConstPtr& msg){
       //rangeWidget.setUrgData(points,msg->header.stamp.toSec());
       //rangeWidget2.setUrgData(points,msg->header.stamp.toSec());
 
-      emit hokuyo_update(hokuyo_points_);
+      Q_EMIT hokuyo_update(hokuyo_points_);
 
 }
 
@@ -538,7 +538,7 @@ void Ros::spatialCallback(const corobot_msgs::spatial::ConstPtr &msg)
     mag_y = (double)msg->mag2;
     mag_z = (double)msg->mag3;
 
-    emit spatial_data(acc_x,acc_y,acc_z,ang_x,ang_y,ang_z,mag_x,mag_y,mag_z);
+    Q_EMIT spatial_data(acc_x,acc_y,acc_z,ang_x,ang_y,ang_z,mag_x,mag_y,mag_z);
 }
 
 void Ros::moveGripper(bool state){

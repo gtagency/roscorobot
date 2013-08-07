@@ -50,13 +50,13 @@ void CameraWidget::timerEvent(QTimerEvent *event)
      Q_UNUSED(event);
 
      QList<QGraphicsPixmapItem *> pictures;
-         foreach (QGraphicsItem *item, scene()->items()) {
+         Q_FOREACH (QGraphicsItem *item, scene()->items()) {
              if (QGraphicsPixmapItem *p = qgraphicsitem_cast<QGraphicsPixmapItem *>(item))
                  pictures << p;
          }
 
 
-         foreach (QGraphicsPixmapItem *p, pictures){
+         Q_FOREACH (QGraphicsPixmapItem *p, pictures){
 
              if(p->scale()>0.1){
              if((p->pixmap().size().width()*0.5+p->pos().x()) > (this->sceneRect().right() - LINE_POS)){

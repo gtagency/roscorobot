@@ -11,8 +11,10 @@ cmake_minimum_required(VERSION 2.4.6)
 include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
 rosbuild_init()
 
+# qt_build provides the qt cmake glue, roscpp the comms for a default talker
+find_package(catkin REQUIRED COMPONENTS qt_build roscpp)
+include_directories(${catkin_INCLUDE_DIRS})
 
-rosbuild_include(qt_build qt-ros)
 rosbuild_prepare_qt4(QtCore QtGui QtWebKit QtOpengl)
 
 #set the default path for built executables to the "bin" directory

@@ -22,7 +22,7 @@ class Hokuyo : public QWidget
     bool showIR;
     bool showLRF;
 
-public slots:
+public Q_SLOTS:
     void hokuyo_update(Hokuyo_Points* hokuyo_points_);
     void IR_update(double IR01_new, double IR02_new);
 

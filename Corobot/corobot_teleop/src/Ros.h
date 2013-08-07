@@ -112,7 +112,7 @@ private:
        void timerCallback(const ros::TimerEvent& event);
 
 
-signals :
+Q_SIGNALS :
        void posArmReal(double x, double y); //position of the robot arm
        void angleWristReal (double angle);//angle of the robot wrist
        void irData(double ir01, double ir02);
@@ -138,7 +138,7 @@ signals :
 
        void hokuyo_update(Hokuyo_Points* hokuyo_points);
 
-   public slots:
+   public Q_SLOTS:
 
        void turnWrist(float angle); //turn the robor wrist
        void moveGripper(bool state);//change gripper state

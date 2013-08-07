@@ -123,7 +123,7 @@ joint::joint(ArmRotationWidget *graphWidget)
  {
      switch (change) {
      case ItemPositionHasChanged:
-      //   foreach (Edge *edge, edgeList)
+      //   Q_FOREACH (Edge *edge, edgeList)
         //     edge->adjust();
 	 if(graph != NULL)
          	graph->itemMoved();

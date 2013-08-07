@@ -64,8 +64,8 @@ public:
 protected:
     void keyPressEvent(QKeyEvent *event);//executed each time a keyboard key is pushed
     void keyReleaseEvent(QKeyEvent *event);//executed each time a keyboard key is release
-    signals :
-          void size_changed(); //emited when the size of the window changes
+    Q_SIGNALS :
+          void size_changed(); //Q_EMITed when the size of the window changes
 
 private:
     Ui::MainWindow *ui;
@@ -86,7 +86,7 @@ private:
 
 
 
-    public slots:
+    public Q_SLOTS:
             void change_url(QUrl url); //set url to the web viewer
             void connect_clicked(); // executed when the connect button is pushed
             void update_ptz(QImage image); //order the ptz camera scene to update
