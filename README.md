@@ -100,15 +100,15 @@ rosws set sandbox
 source setup.bash
 ```
 
-Now we can create a package called my_package.  This package
+Now we can create a package called example.  This package
 will depend on rospy, std_msgs, and corobot_msgs (to publish
 to Corobot notes):
 ```
 cd ~/rosbuild_ws
 source setup.bash
 cd sandbox
-roscreate-pkg my_package std_msgs rospy corobot_msgs
-rosmake my_package
+roscreate-pkg example std_msgs rospy corobot_msgs
+rosmake example
 ```
 
 This should complete successfully.  
@@ -116,10 +116,10 @@ This should complete successfully.
 There is one last thing you need to do once you've created a python node.  At the top of your python file, underneath
 the environment definition (e.g. "#!/usr/bin/env python"), add the following:
 ```
-import roslib; roslib.load_manifest('my_package')
+import roslib; roslib.load_manifest('example')
 ```
 
-where my_package is the name of the package you created.
+where example is the name of the package you created.
 
 ## Change Log
 
