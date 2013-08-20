@@ -108,7 +108,7 @@ cd ~/rosbuild_ws
 source setup.bash
 cd sandbox
 roscreate-pkg my_package std_msgs rospy corobot_msgs
-rosbuild my_package
+rosmake my_package
 ```
 
 This should complete successfully.  
