@@ -76,6 +76,51 @@ roslaunch corobot_teleop corobot_ros_gui.launch
 This assumes that the workspace was previously added to the current bash session.  This will launch the
 GUI and nodes to manage the various sensors, and enable keyboard teleop.
 
+## Developing New Applications
+
+To develop applications on the Corobot, you must work within a ROS workspace.  This is because the Corobot
+code is built using "dry" packages (e.g. rosbuild packages).  Luckily, the ROS workspace can be overlayed on
+top of the catkin workspace built above.
+
+These instructions assume that you will use a ROS workspace called 'rosbuild_ws' in your home directory.
+
+Create the workspace and overlay it on top of the existing catkin workspace:
+```
+mkdir ~/rosbuild_ws
+cd ~/rosbuild_ws
+rosws init . ~/catkin_ws
+source setup.bash
+```
+
+Create the sandbox folder that will contain your packages:
+```
+cd ~/rosbuild_ws
+mkdir sandbox
+rosws set sandbox
+source setup.bash
+```
+
+Now we can create a package called my_package.  This package
+will depend on rospy, std_msgs, and corobot_msgs (to publish
+to Corobot notes):
+```
+cd ~/rosbuild_ws
+source setup.bash
+cd sandbox
+roscreate-pkg my_package std_msgs rospy corobot_msgs
+rosbuild my_package
+```
+
+This should complete successfully.  
+  
+There is one last thing you need to do once you've created a python node.  At the top of your python file, underneath
+the environment definition (e.g. "#!/usr/bin/env python"), add the following:
+```
+import roslib; roslib.load_manifest('my_package')
+```
+
+where my_package is the name of the package you created.
+
 ## Change Log
 
 The following changes were made to support Groovy:
