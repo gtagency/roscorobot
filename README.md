@@ -88,7 +88,7 @@ Create the workspace and overlay it on top of the existing catkin workspace:
 ```
 mkdir ~/rosbuild_ws
 cd ~/rosbuild_ws
-rosws init . ~/catkin_ws
+rosws init . ~/catkin_ws/devel
 source setup.bash
 ```
 
