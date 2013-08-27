@@ -10,9 +10,10 @@
   <url>http://ros.org/wiki/corobot_pid</url>
   <depend package="rospy"/>
   <depend package="std_msgs"/>
+  <depend package="sensor_msgs"/>
   <depend package="corobot_msgs"/>
   <depend package="opencv2"/>
-
+  <depend package="cv_bridge" />
 </package>
 
 
