@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import roslib; roslib.load_manifest('corobot_pid')
 import rospy
-from std_msgs.msg import Float32
+from std_msgs.msg import Float64
 from std_msgs.msg import Int32
 from corobot_msgs.msg import MotorCommand
 import cv2
@@ -30,6 +30,7 @@ error_pub = None
 target_velocity_pub = None
 motor_pub = None
 
+target_velocity = 0
 
 # Get binary thresholded image
 # low_HSV, hi_HSV - low, high range values for threshold as a list [H,S,V]
@@ -51,16 +52,17 @@ def get_binary(src_img, low_HSV, hi_HSV, debug=False):
     return bin_img
 
 def receiveImage(data):
-    global error_pub
+    global error_pub, cvbridge
 
     try:
-        cv_image = self.bridge.imgmsg_to_cv(data, "bgr8")
+        cv_image = cvbridge.imgmsg_to_cv(data, "bgr8")
     except CvBridgeError, e:
         print e
 
-    bin_img = get_binary(cv_image, LOW_HSV, HIGH_HSV)
+    arr = np.asarray(cv_image)
+    bin_img = get_binary(arr, LOW_HSV, HIGH_HSV)
 
-    imgSize = np.shape(M)
+    imgSize = np.shape(bin_img)
 
     # NOTE: Assumes an accurate color/marker detection at the very top row of the image
     start = -1
@@ -68,9 +70,9 @@ def receiveImage(data):
     row = 0
 
     for j in range(imgSize[1]):
-        if start < 0 and b[row,j] != 0:
+        if start < 0 and bin_img[row,j] != 0:
 	        start = j
-        if end < 0 and start >= 0 and b[row,j] == 0:
+        if end < 0 and start >= 0 and bin_img[row,j] == 0:
 	        end = j
         if (start >= 0 and end >= 0):
 	        break
@@ -86,32 +88,40 @@ def receiveImage(data):
     error_rad = math.tan(float(error_px)/imgSize[0])
 
     error_pub.publish(error_rad)
-    #print start, end
-    #print det_width, tgt_width
-    #print error_px, error_rad
+    print start, end
+    print det_width, tgt_width
+    print error_px, error_rad
 
 def node():
     global error_pub,target_velocity_pub,motor_pub
     rospy.init_node('cpid')
-    error_pub = rospy.Publisher('control_error', Float32)
-    rospy.Subcriber('target_velocity', Int32, set_target_velocity)
+    rospy.Subscriber('image_raw', Image, receiveImage)
+    error_pub = rospy.Publisher('control_error', Float64)
+    rospy.Subscriber('target_velocity', Int32, set_target_velocity)
     motor_pub = rospy.Publisher('PhidgetMotor', MotorCommand)
-    rospy.Subcriber('control_correction', Float32, send_command)
-
+    rospy.Subscriber('control_correction', Float64, send_command)
+    print "Ready to accept images and send errors"
     rospy.spin()
 
 def set_target_velocity(target):
     global target_velocity
-    target_velocity = target
+    target_velocity = target.data
+    print "New target velocity", target_velocity
 
 def send_command(adjustment):
     global target_velocity, motor_pub
-    mc = MotorCommand()
-    mc.leftSpeed = target_velocity * sin(adjustment)
-    mc.rightSpeed = target_velocity * (1 - sin(adjustment))
-    mc.acceleration = 50
-    mc.secondsDuration = 1
-    motorPub.publish(mc)
+    # Only move if the target velocity is non zero
+    # Otherwise, the robot should be stationary
+    if target_velocity != 0:
+        mc = MotorCommand()
+        ang_f = adjustment.data
+        tv_f = float(target_velocity)
+        mc.leftSpeed  = tv_f + (tv_f/2) * sin(ang_f)
+        mc.rightSpeed = tv_f + (tv_f/2) * (-sin(ang_f))
+        mc.acceleration = 50
+        mc.secondsDuration = 1
+        print "Publishing corrected motor command", mc
+        motor_pub.publish(mc)
 
 if __name__ == '__main__':
     try:
