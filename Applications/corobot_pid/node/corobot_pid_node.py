@@ -125,7 +125,7 @@ def send_command(adjustment):
         mc.acceleration = 50
         mc.secondsDuration = 1
         print "Publishing corrected motor command", mc
-    #    motor_pub.publish(mc)
+        motor_pub.publish(mc)
 
 if __name__ == '__main__':
     try:
