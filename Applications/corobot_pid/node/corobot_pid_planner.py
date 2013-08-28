@@ -14,6 +14,9 @@ from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
 from math import sin
 
+# Very Very simple planner turns the wheels on when it sees green
+# and turns the wheels off when it doesnt
+
 # Hardcoded values for green android folder
 LOW_HSV = [60, 50, 50]
 
@@ -25,12 +28,7 @@ bin_img = None
 
 cvbridge = CvBridge()
 
-# Global variables
-error_pub = None
 target_velocity_pub = None
-motor_pub = None
-
-target_velocity = 0
 
 # Get binary thresholded image
 # low_HSV, hi_HSV - low, high range values for threshold as a list [H,S,V]
@@ -52,7 +50,7 @@ def get_binary(src_img, low_HSV, hi_HSV, debug=False):
     return bin_img
 
 def receiveImage(data):
-    global error_pub, cvbridge
+    global target_velocity_pub, cvbridge
 
     try:
         cv_image = cvbridge.imgmsg_to_cv(data, "bgr8")
@@ -77,55 +75,21 @@ def receiveImage(data):
         if (start >= 0 and end >= 0):
 	        break
 
-    error_rad = 0
+    target_vel = 0
     print start, end
     if start >= 0 or end >= 0:
-        # compute the error term by computing the midpoint of
-        # the detected line in the image, and calculating
-        # the angle from that point (at the top of the image)
-        # to the center of the bottom of the image
-        det_width = (end - start) / 2
-        tgt_width = imgSize[1] / 2
-        error_px  = (start + det_width) - tgt_width
-        error_rad = math.tan(float(error_px)/imgSize[0])
-
-        #print start, end
-        #print det_width, tgt_width
-        #print error_px, error_rad
+        target_vel = 50
     else:
         print "No line detected, error_rad = 0"
-    error_pub.publish(error_rad)
+    target_velocity_pub.publish(target_vel)
 
 def node():
-    global error_pub,target_velocity_pub,motor_pub
-    rospy.init_node('cpid')
+    global target_velocity_pub
+    rospy.init_node('cplan')
     rospy.Subscriber('image_raw', Image, receiveImage)
-    error_pub = rospy.Publisher('control_error', Float64)
-    rospy.Subscriber('target_velocity', Int32, set_target_velocity)
-    motor_pub = rospy.Publisher('PhidgetMotor', MotorCommand)
-    rospy.Subscriber('control_correction', Float64, send_command)
-    print "Ready to accept images and send errors"
+    target_velocity_pub = rospy.Publisher('target_velocity', Int32)
+    print "Ready to control the robot"
     rospy.spin()
-
-def set_target_velocity(target):
-    global target_velocity
-    target_velocity = target.data
-    print "New target velocity", target_velocity
-
-def send_command(adjustment):
-    global target_velocity, motor_pub
-    # Only move if the target velocity is non zero
-    # Otherwise, the robot should be stationary
-    if target_velocity != 0:
-        mc = MotorCommand()
-        ang_f = adjustment.data
-        tv_f = float(target_velocity)
-        mc.leftSpeed  = tv_f + (tv_f/2) * sin(ang_f)
-        mc.rightSpeed = tv_f + (tv_f/2) * (-sin(ang_f))
-        mc.acceleration = 50
-        mc.secondsDuration = 1
-        print "Publishing corrected motor command", mc
-    #    motor_pub.publish(mc)
 
 if __name__ == '__main__':
     try:

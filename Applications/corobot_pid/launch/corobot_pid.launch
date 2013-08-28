@@ -1,0 +1,15 @@
+<launch>
+
+  <node pkg="image_proc" name="improc" type="image_proc" ns="PTZ"/>
+  <group ns="corobot_pid">
+    <node pkg="corobot_pid" name="cpid" type="corobot_pid_node.py">
+        <remap from="image_raw" to="/PTZ/image_color"/>
+        <remap from="PhidgetMotor" to="/PhidgetMotor"/>
+    </node>
+    <node pkg="corobot_pid" name="cplan" type="corobot_pid_planner.py">
+        <remap from="image_raw" to="/PTZ/image_color"/>
+    </node>
+    <node pkg="control_pid" name="control_pid" type="core_pid_node.py"/>
+  </group>
+
+</launch>
