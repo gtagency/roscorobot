@@ -32,24 +32,6 @@ motor_pub = None
 
 target_velocity = 0
 
-# Get binary thresholded image
-# low_HSV, hi_HSV - low, high range values for threshold as a list [H,S,V]
-# debug= True to display the binary image generated
-def get_binary(src_img, low_HSV, hi_HSV, debug=False):
-    global hsv_img, bin_img
-    #convert to HSV
-    hsv_img = cv2.cvtColor(src_img, cv.CV_BGR2HSV)
-    #generate binary image
-    lower = np.array(low_HSV)
-    higher = np.array(hi_HSV)
-    bin_img = cv2.inRange(hsv_img, lower, higher)
-    if debug:
-        cv2.namedWindow("Binary")
-        cv2.imshow("Binary",bin_img)
-        cv2.waitKey(0)
-        cv2.destroyWindow("Binary")
-        
-    return bin_img
 
 def receiveImage(data):
     global error_pub, cvbridge
@@ -59,41 +41,15 @@ def receiveImage(data):
     except CvBridgeError, e:
         print e
 
-    arr = np.asarray(cv_image)
-    bin_img = get_binary(arr, LOW_HSV, HIGH_HSV)
-
-    imgSize = np.shape(bin_img)
-
-    # NOTE: Assumes an accurate color/marker detection at the very top row of the image
-    start = -1
-    end = -1
-    row = 0
-
-    for j in range(imgSize[1]):
-        if start < 0 and bin_img[row,j] != 0:
-	        start = j
-        if end < 0 and start >= 0 and bin_img[row,j] == 0:
-	        end = j
-        if (start >= 0 and end >= 0):
-	        break
-
-    error_rad = 0
-    print start, end
-    if start >= 0 or end >= 0:
-        # compute the error term by computing the midpoint of
-        # the detected line in the image, and calculating
-        # the angle from that point (at the top of the image)
-        # to the center of the bottom of the image
-        det_width = (end - start) / 2
-        tgt_width = imgSize[1] / 2
-        error_px  = (start + det_width) - tgt_width
-        error_rad = math.tan(float(error_px)/imgSize[0])
-
-        #print start, end
-        #print det_width, tgt_width
-        #print error_px, error_rad
-    else:
-        print "No line detected, error_rad = 0"
+    gray_img = cv2.cvtColor(cv_image, cv2.COLOR_BGR2GRAY)
+    thresh, thresh_img = cv2.threshold(gray_img, 128, 255, cv2.THRESH_BINARY|cv2.THRESH_OTSU)
+    edge_img = cv2.Canny(thresh_img, 80, 120)
+    lines = cv2.HoughLines(edge_img, 1, math.pi/180, 210)
+    
+    thetas = [theta if (theta < np.pi/2) else (np.pi-theta) for rho, theta in lines[0]]
+    avg_theta = sum(thetas)/float(len(thetas))
+    error_rad = avg_theta
+    
     error_pub.publish(error_rad)
 
 def node():
