@@ -14,52 +14,52 @@ from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
 from math import sin
 
-# Hardcoded values for green android folder
-LOW_HSV = [60, 50, 50]
-
-HIGH_HSV = [90, 255, 255]
-
-#GLOBAL IMAGES
-hsv_img = None
-bin_img = None
-
 cvbridge = CvBridge()
 
 # Global variables
 error_pub = None
 target_velocity_pub = None
 motor_pub = None
-
+edge_pub = None
+lines_pub = None
 target_velocity = 0
 
 
 def receiveImage(data):
-    global error_pub, cvbridge
+    global error_pub, cvbridge, edge_pub
 
     try:
         cv_image = cvbridge.imgmsg_to_cv(data, "bgr8")
     except CvBridgeError, e:
         print e
 
-    gray_img = cv2.cvtColor(cv_image, cv2.COLOR_BGR2GRAY)
+    arr = np.asarray(cv_image)
+    gray_img = cv2.cvtColor(arr, cv2.COLOR_BGR2GRAY)
     thresh, thresh_img = cv2.threshold(gray_img, 128, 255, cv2.THRESH_BINARY|cv2.THRESH_OTSU)
     edge_img = cv2.Canny(thresh_img, 80, 120)
-    lines = cv2.HoughLines(edge_img, 1, math.pi/180, 210)
-    
-    thetas = [theta if (theta < np.pi/2) else (np.pi-theta) for rho, theta in lines[0]]
-    avg_theta = sum(thetas)/float(len(thetas))
-    error_rad = avg_theta
-    
+    cv_image2 = cv.fromarray(edge_img)
+    edge_pub.publish(cvbridge.cv_to_imgmsg(cv_image2, "passthrough"))
+ 
+    lines = cv2.HoughLines(edge_img, 1, math.pi/180, 100)
+    if lines is not None:
+        thetas = [theta if (theta < np.pi/2) else (np.pi-theta) for rho, theta in lines[0]]
+
+        avg_theta = sum(thetas)/float(len(thetas))
+        error_rad = avg_theta
+    else:
+        print "No lines detected"
+        error_rad = 0
     error_pub.publish(error_rad)
 
 def node():
-    global error_pub,target_velocity_pub,motor_pub
+    global error_pub,target_velocity_pub,motor_pub,edge_pub
     rospy.init_node('cpid')
     rospy.Subscriber('image_raw', Image, receiveImage)
     error_pub = rospy.Publisher('control_error', Float64)
     rospy.Subscriber('target_velocity', Int32, set_target_velocity)
     motor_pub = rospy.Publisher('PhidgetMotor', MotorCommand)
     rospy.Subscriber('control_correction', Float64, send_command)
+    edge_pub = rospy.Publisher('edge_img', Image)
     print "Ready to accept images and send errors"
     rospy.spin()
 
