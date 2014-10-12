@@ -35,6 +35,7 @@
 #include "hokuyo/hokuyo.h"
 #include <stdio.h>
 #include <ros/console.h>
+#include <log4cxx/logger.h>
 
 using namespace std;
 
@@ -54,7 +55,8 @@ main(int argc, char** argv)
   {
     // In quiet mode we want to turn off logging levels that go to stdout.
     log4cxx::LoggerPtr my_logger = log4cxx::Logger::getLogger(ROSCONSOLE_DEFAULT_NAME);
-    my_logger->setLevel(ros::console::g_level_lookup[ros::console::levels::Error]);
+    //my_logger->setLevel(ros::console::g_level_lookup[ros::console::levels::Error]);
+    my_logger->setLevel(log4cxx::Level::getError());
   }
 
   hokuyo::Laser laser;

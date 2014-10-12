@@ -15,7 +15,8 @@
   <depend package = "sensor_msgs" />
   <depend package = "tf" />
   <depend package = "geometry_msgs" />
-  <depend package = "common_rosdeps" />
+  <!-- JR, 10/12/14, no longer needed after Fuerte -->
+  <!--  <depend package = "common_rosdeps" /> -->
   <rosdep name = "eigen" />
 
 

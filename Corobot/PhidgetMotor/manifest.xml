@@ -18,6 +18,7 @@
   <depend package="std_msgs" />
   <depend package="rospy" />
   <rosdep name="python" />
+  <depend package="libphidgets" />
   <depend package="corobot_srvs" />
   <depend package="corobot_msgs" />
 </package>

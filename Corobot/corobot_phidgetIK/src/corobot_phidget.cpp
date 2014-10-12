@@ -16,7 +16,7 @@
 #include "corobot_msgs/spatial.h"
 #include "corobot_msgs/RangeSensor.h"
 #include "sensor_msgs/Imu.h"
-#include <phidget21.h>
+#include <libphidgets/phidget21.h>
 #include <tf/transform_datatypes.h>
 #include <diagnostic_updater/diagnostic_updater.h>
 #include <diagnostic_updater/publisher.h>

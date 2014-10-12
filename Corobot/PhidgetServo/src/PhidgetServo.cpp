@@ -1,6 +1,6 @@
 #include "ros/ros.h"
 #include <stdio.h>
-#include <phidget21.h>
+#include <libphidgets/phidget21.h>
 
 #include "corobot_srvs/GetEngaged.h"
 #include "corobot_srvs/SetEngaged.h"
