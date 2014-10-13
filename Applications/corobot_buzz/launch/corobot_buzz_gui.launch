@@ -1,0 +1,117 @@
+<launch>
+
+    <arg name="record_cameras" default="true" />
+
+    <!-- 1 if you want to invert the motors, 0 if not. This is used only in the case where the robot can turn properly but the forward and backward movement are inverted (by testing in the corobot_teleop package for example). It also invert the encoders at the same time-->
+    <arg name="motors_inverted" value="0"/>
+
+    <!-- 1 if you want to invert the encoders, 0 if not. This is used when the odometry give a negative x position when the robot moves forward-->
+    <arg name="encoders_inverted" value="0"/>
+
+    <!-- 1 if you have one front camera, 0 if you don't -->
+    <arg name="FrontCamera" value="1"/>
+    <!-- 1 if you want to enable the mjpeg_stream, 0 to unable it. If enable, the camera will send mjpeg stream to the usb instead of raw rgb images. This saves usb bandwidth, but add some computational need-->
+    <arg name="cameraFront_mjpeg_stream" value="1"/>
+    <!-- 1 if you want to enable to jpeg compression for the image visualizer in the corobot_teleop GUI, 0 to unable it -->
+    <arg name="cameraFront_jpeg_compression" value="1"/>
+    <!-- port of the camera -->
+    <arg name="cameraFront_port" value="/dev/video0"/>
+    <!-- parameter file of the camera -->   
+    <arg name="cameraFront_parameter_file" value="$(find corobot_camera)/camera_parameters/quickcam_pro_9000.txt"/>
+    <!-- Topic where the images will be send on -->
+    <arg name="cameraFront_topic" value="/PTZ/image_raw"/>
+    <!-- Width of the images -->
+    <arg name="cameraFront_width" value="640"/>
+    <!-- Height of the images -->
+    <arg name="cameraFront_height" value="480"/>
+    <!-- if true starts the camera immediately, if false requires a manual start-->
+    <arg name="cameraFront_immediately" value="true"/>
+    <!-- Number of images per second received from the camera-->
+    <arg name="cameraFront_fps" value="10"/>
+    <!-- JPEG quality, if 100 high quality, if 0 very bad quality -->
+    <arg name="cameraFront_JpegQuality" value="50"/>
+
+    <!-- Port of the joystick -->
+    <arg name="joystick_port" value="/dev/input/js0"/>
+<!--
+    <node pkg="PhidgetMotor" name="PhidgetMotor" type="PhidgetMotor.py" args="">
+	    <param name="motors_inverted" type="bool" value="$(arg motors_inverted)"/>
+    </node>
+  	<node pkg="corobot_phidgetIK" name="phidgettoROS" type="corobot_phidget">
+		<param name="bwOutput" type="int" value="0"/>
+		<param name="strobeOutput" type="int" value="0"/>
+		<param name="lastSonarInput" type="int" value="0"/>
+		<param name="firstSonarInput" type="int" value="0"/>
+		<param name="battery" type="int" value="0"/>
+		<param name="irFront" type="int" value="1"/>
+		<param name="irBack" type="int" value="1"/> 
+		<param name="motors_inverted" type="bool" value="$(arg motors_inverted)"/>
+		<param name="encoders_inverted" type="bool" value="$(arg encoders_inverted)"/>
+  	</node>
+	<node pkg="corobot_state_tf" name="corobot_state_tf" type="corobot_state_tf">
+		<param name="Explorer" type="bool" value="0"/>
+		<param name="Corobot4WD" type="bool" value="0"/>
+		<param name="publish_odom_tf" type="bool" value="1"/>
+	</node>
+-->
+    <param name="PTZ/image_raw/compressed/jpeg_quality" type="int" value="$(arg cameraFront_JpegQuality)"/>
+
+	<node pkg="usb_cam" name="PTZ" type="usb_cam_node">
+		<param name="video_device" value="$(arg cameraFront_port)"/>
+        <param name="image_width" value="$(arg cameraFront_width)" />
+        <param name="image_height" value="$(arg cameraFront_height)" />
+        <param name="framerate" value="$(arg cameraFront_fps)" />
+        <param name="pixel_format" value="yuyv" />
+	</node>
+<!--
+    <node pkg="corobot_camera" name="PTZcamera" type="dynamic_sender" ns="/PTZ" >
+        <param name="device" value="$(arg cameraFront_port)"/>
+        <param name="camera_parameter_file" value="$(arg cameraFront_parameter_file)" />
+        <param name="topic" value="$(arg cameraFront_topic)" />
+        <param name="width" value="$(arg cameraFront_width)" />
+        <param name="height" value="$(arg cameraFront_height)" />
+        <param name="immediately" value="$(arg cameraFront_immediately)" />
+        <param name="fps" value="$(arg cameraFront_fps)" />
+        <param name="isjpeg" value="$(arg cameraFront_mjpeg_stream)" />
+
+    </node>
+-->
+<!--
+  <env name="GSCAM_CONFIG" value="v4l2src device=/dev/video0 ! video/x-raw-yuv,framerate=30/1,width=640,height=480 " />
+  <node pkg="gscam" type="gscam" name="PTZ">
+    <param name="camera_name" value="PTZ" />
+    <remap from="camera/image_raw" to="PTZ/image_raw" />
+  </node>
+
+    <node pkg="image_proc" name="camera_proc" type="image_proc" ns="/PTZ" />
+-->
+	<node pkg="joy" name="joy" type="joy_node">
+    	<param name="dev" value="$(arg joystick_port)"/>
+    </node>
+
+    <node pkg="corobot_joystick" name="joystick_control" type="joystick_control"/>
+<!--
+	<node pkg="corobot_teleop" name="GUI" type="corobot_teleop">
+		<param name="cameraFront_jpeg_compression" type="bool" value="$(arg cameraFront_jpeg_compression)" />
+        <remap to="$(arg cameraFront_topic)" from="/image_raw" />
+	</node>
+-->
+    <node pkg="projection" name="frontCam_proj" type="projection_node" ns="PTZ">
+<!--        <remap from="image_raw" to="image_color"/> -->
+        <param name="ground_x_dim" value="4"/>
+        <param name="ground_y_dim" value="4"/>
+        <param name="ground_z_dim" value="0.396"/>
+    </node>
+    <node pkg="image_view" name="frontCam_view" type="image_view">
+        <remap from="image" to="/PTZ/image_raw" />
+    </node>
+    <node pkg="image_view" name="frontCam_proj_view" type="image_view">
+        <remap from="image" to="/PTZ/image_projected" />
+    </node>
+
+    <node pkg="rosbag" type="record" name="rosbag_record_cam"
+       args="/PTZ/image_raw /PTZ/camera_info /BACK/image_raw /BACK/camera_info"
+       if="$(arg record_cameras)" />
+
+</launch>
+

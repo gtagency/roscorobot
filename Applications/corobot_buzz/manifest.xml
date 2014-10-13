@@ -1,0 +1,14 @@
+<package>
+  <description brief="corobot_buzz">
+
+     corobot_buzz
+
+  </description>
+  <author>Jesse Rosalia</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/corobot_buzz</url>
+
+</package>
+
+
