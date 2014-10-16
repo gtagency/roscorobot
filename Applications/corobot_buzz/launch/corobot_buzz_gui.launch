@@ -113,5 +113,14 @@
        args="/PTZ/image_raw /PTZ/camera_info /BACK/image_raw /BACK/camera_info"
        if="$(arg record_cameras)" />
 
+    <node pkg="driver_differential" name="differential_driver_corobot" type="driver_differential_node" ns="PTZ">
+        <param name="wheelRadius" value="0.0575"/>
+        <param name="wheelSeparation" value="0.285"/>
+        <param name="speedAdjustment" value="0.13122"/>
+        <param name="targetV" value="70"/>
+        <param name="toleranceDist" value="1"/>
+        <param name="toleranceTheta" value=".75"/>
+    </node>
+
 </launch>
 
