@@ -1,0 +1,17 @@
+<package>
+  <description brief="corobot_dead_reckoning">
+
+     corobot_dead_reckoning
+
+  </description>
+  <author>viki</author>
+  <license>MIT</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/corobot_dead_reckoning</url>
+  <depend package="rospy"/>
+  <depend package="geometry_msgs"/>
+  <depend package="corobot_msgs" />
+
+</package>
+
+
