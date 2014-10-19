@@ -26,7 +26,7 @@ class DeadReckoningLocalizer:
         t = self.posTheta
         newX = math.cos(t) * xR - math.sin(t) * xY + self.posX
         newY = math.sin(t) * xR + math.cos(t) * xY + self.posY
-        newTheta = (t + thetaR) % math.pi
+        newTheta = (t + thetaR) % (2 * math.pi)
         self.posX = newX
         self.posY = newY
         self.posTheta = newTheta
