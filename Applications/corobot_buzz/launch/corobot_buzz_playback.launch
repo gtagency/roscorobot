@@ -1,6 +1,8 @@
 <launch>
     <!-- Port of the joystick -->
     <node pkg="projection" name="frontCam_proj" type="projection_node" ns="PTZ">
+        <param name="output_x_res" value="400" />
+        <param name="output_y_res" value="400" />
         <param name="ground_x_dim" value="4"/>
         <param name="ground_y_dim" value="4"/>
         <param name="ground_z_dim" value="0.396"/>
